@@ -15,7 +15,7 @@ export function BarbershopInfo({ barbershop }: BarbershopInfoProps) {
 	const router = useRouter();
 
 	const handleReturnToHome = () => {
-		router.push('/');
+		router.replace('/');
 	};
 
 	return (
