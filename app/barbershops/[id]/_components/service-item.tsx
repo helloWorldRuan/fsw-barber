@@ -17,7 +17,9 @@ import { ptBR } from 'date-fns/locale/pt-BR';
 import { Loader2 } from 'lucide-react';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { saveBooking } from '../_actions/save-booking';
 import { formatPriceToBRL } from '../_helpers/formatPrice';
 import { generateDayTimeList } from '../_helpers/hours';
@@ -35,10 +37,13 @@ export function ServiceItem({
 	barbershop,
 	isAuthenticated,
 }: ServiceItemProps) {
+	const router = useRouter();
 	const { data } = useSession();
+
 	const [date, setDate] = useState<Date | undefined>(new Date());
 	const [bookedHour, setBookedHour] = useState<string>('');
 	const [isSubmitLoading, setIsSubmitLoading] = useState(false);
+	const [isOpenSheet, setIsOpenSheet] = useState(false);
 
 	const handleBookingClick = () => {
 		if (!isAuthenticated) return signIn('google');
@@ -77,8 +82,23 @@ export function ServiceItem({
 				userId: (data?.user as any).id,
 				date: dateTime,
 			});
-		} catch (error) {
-			console.log('👽 ~ error:', error);
+
+			setIsOpenSheet(false);
+
+			setBookedHour('');
+			setDate(undefined);
+
+			toast('Reserva marcada com sucesso', {
+				description: format(dateTime, "'Para' dd 'de' MMMM 'às' HH:mm '.'", {
+					locale: ptBR,
+				}),
+				action: {
+					label: 'Visualizar',
+					onClick: () => router.push('/bookings'),
+				},
+			});
+		} catch {
+			toast('☹️ Não foi possível agendar no momento');
 		} finally {
 			setIsSubmitLoading(false);
 		}
@@ -109,7 +129,7 @@ export function ServiceItem({
 							{formatPriceToBRL(service.price)}
 						</h3>
 
-						<Sheet>
+						<Sheet open={isOpenSheet} onOpenChange={setIsOpenSheet}>
 							<SheetTrigger asChild>
 								<Button
 									onClick={handleBookingClick}
