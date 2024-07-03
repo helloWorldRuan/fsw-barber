@@ -11,15 +11,16 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from '@/app/_components/ui/sheet';
-import { Barbershop, Service } from '@prisma/client';
+import { Barbershop, Booking, Service } from '@prisma/client';
 import { format, setHours, setMinutes } from 'date-fns';
 import { ptBR } from 'date-fns/locale/pt-BR';
 import { Loader2 } from 'lucide-react';
 import { signIn, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { getBookingsByDate } from '../_actions/get-bookings';
 import { saveBooking } from '../_actions/save-booking';
 import { formatPriceToBRL } from '../_helpers/formatPrice';
 import { generateDayTimeList } from '../_helpers/hours';
@@ -44,11 +45,22 @@ export function ServiceItem({
 	const [bookedHour, setBookedHour] = useState<string>('');
 	const [isSubmitLoading, setIsSubmitLoading] = useState(false);
 	const [isOpenSheet, setIsOpenSheet] = useState(false);
+	const [dayBooking, setDayBooking] = useState<Booking[]>([]);
+
+	useEffect(() => {
+		if (!date) return;
+
+		const refreshAvailableHours = async () => {
+			const data = await getBookingsByDate(barbershop.id, date);
+
+			setDayBooking(data);
+		};
+
+		refreshAvailableHours();
+	}, [date, barbershop]);
 
 	const handleBookingClick = () => {
 		if (!isAuthenticated) return signIn('google');
-
-		// TODO open booking page
 	};
 
 	const handleToggleBookHour = (time: string) => {
@@ -105,8 +117,22 @@ export function ServiceItem({
 	};
 
 	const timeList = useMemo(() => {
-		return date ? generateDayTimeList(date) : [];
-	}, [date]);
+		if (!date) return [];
+
+		return generateDayTimeList(date).filter((time) => {
+			const timeHour = Number(time.split(':')[0]);
+			const timeMinutes = Number(time.split(':')[1]);
+
+			const booking = dayBooking.find((booking) => {
+				const bookingHour = booking.date.getHours();
+				const bookingMinutes = booking.date.getMinutes();
+
+				return bookingHour === timeHour && bookingMinutes === timeMinutes;
+			});
+
+			return !booking ? true : false;
+		});
+	}, [date, dayBooking]);
 
 	return (
 		<Card>
@@ -183,9 +209,13 @@ export function ServiceItem({
 
 											<ServiceSummaryItem
 												label="Data"
-												value={format(date?.toString()!, "dd 'de' MMMM", {
-													locale: ptBR,
-												})}
+												value={
+													(date &&
+														format(date.toString(), "dd 'de' MMMM", {
+															locale: ptBR,
+														})) ??
+													''
+												}
 											/>
 
 											<ServiceSummaryItem
