@@ -13,9 +13,12 @@ export default async function Home() {
 
 	const barbershops = await db.barbershop.findMany({});
 
-	const bookings = await db.booking.findMany({
+	const confirmedBookings = await db.booking.findMany({
 		where: {
 			userId: (session as any).id,
+			date: {
+				gte: new Date(),
+			},
 		},
 		include: {
 			service: true,
@@ -46,7 +49,7 @@ export default async function Home() {
 				</h2>
 
 				<div className="flex flex-col gap-4">
-					{bookings.map((booking) => (
+					{confirmedBookings.map((booking) => (
 						<BookingItem key={booking.id} booking={booking} />
 					))}
 				</div>
