@@ -1,13 +1,28 @@
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
+import { getServerSession } from 'next-auth';
 import { BookingItem } from '../_components/booking-item';
 import { Header } from '../_components/header';
 import { db } from '../_lib/prisma';
+import { authOptions } from '../api/auth/[...nextauth]/route';
 import { BarbershopItem } from './_components/barbershop-item';
 import { Search } from './_components/search';
 
 export default async function Home() {
+	const session = await getServerSession(authOptions);
+
 	const barbershops = await db.barbershop.findMany({});
+
+	const bookings = await db.booking.findMany({
+		where: {
+			userId: (session as any).id,
+		},
+		include: {
+			service: true,
+			barbershop: true,
+		},
+		take: 3,
+	});
 
 	return (
 		<>
@@ -30,7 +45,11 @@ export default async function Home() {
 					Agendamentos
 				</h2>
 
-				<BookingItem />
+				<div className="flex flex-col gap-4">
+					{bookings.map((booking) => (
+						<BookingItem key={booking.id} booking={booking} />
+					))}
+				</div>
 			</div>
 
 			<div className="px-5 mt-10 ">
