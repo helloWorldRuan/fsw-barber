@@ -45,29 +45,33 @@ export default async function BookingsPage() {
 			<div className="flex flex-col gap-6 py-5 px-6">
 				<h1 className="font-bold text-xl">Agendamentos</h1>
 
-				<div className="flex flex-col gap-2">
-					<h2 className="text-gray-400 font-bold text-sm uppercase">
-						Confirmados
-					</h2>
+				{confirmedBookings.length > 0 && (
+					<div className="flex flex-col gap-2">
+						<h2 className="text-gray-400 font-bold text-sm uppercase">
+							Confirmados
+						</h2>
 
-					<div className="flex flex-col gap-4">
-						{confirmedBookings.map((booking) => (
-							<BookingItem key={booking.id} booking={booking} />
-						))}
+						<div className="flex flex-col gap-4">
+							{confirmedBookings.map((booking) => (
+								<BookingItem key={booking.id} booking={booking} />
+							))}
+						</div>
 					</div>
-				</div>
+				)}
 
-				<div className="flex flex-col gap-2">
-					<h2 className="text-gray-400 font-bold text-sm uppercase">
-						Finalizados
-					</h2>
+				{finishedBookings.length > 0 && (
+					<div className="flex flex-col gap-2">
+						<h2 className="text-gray-400 font-bold text-sm uppercase">
+							Finalizados
+						</h2>
 
-					<div className="flex flex-col gap-4">
-						{finishedBookings.map((booking) => (
-							<BookingItem key={booking.id} booking={booking} />
-						))}
+						<div className="flex flex-col gap-4">
+							{finishedBookings.map((booking) => (
+								<BookingItem key={booking.id} booking={booking} />
+							))}
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 		</>
 	);
