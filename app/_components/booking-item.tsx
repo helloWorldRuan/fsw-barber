@@ -10,6 +10,17 @@ import { toast } from 'sonner';
 import { cancelBooking } from '../_actions/cancel-booking';
 import { BookingStatusBadge } from './booking-status-badge';
 import { ServiceSummary } from './service-summary';
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from './ui/alert-dialog';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Button } from './ui/button';
 import { Card, CardContent } from './ui/card';
@@ -140,13 +151,37 @@ export function BookingItem({ booking }: BookingItemProps) {
 						<Button variant="secondary">Voltar</Button>
 					</SheetClose>
 
-					<Button
-						onClick={handleCancelBooking}
-						disabled={isPast(booking.date) || isDeleteLoading}
-						variant="destructive"
-					>
-						Cancelar reserva
-					</Button>
+					<AlertDialog>
+						<AlertDialogTrigger asChild>
+							<Button
+								disabled={isPast(booking.date) || isDeleteLoading}
+								variant="destructive"
+							>
+								Cancelar reserva
+							</Button>
+						</AlertDialogTrigger>
+						<AlertDialogContent className="w-[90%]">
+							<AlertDialogHeader>
+								<AlertDialogTitle>Cancelar Reserva?</AlertDialogTitle>
+
+								<AlertDialogDescription>
+									Tem certeza que deseja cancelar esse agendamento?
+								</AlertDialogDescription>
+							</AlertDialogHeader>
+							<AlertDialogFooter className="flex-row gap-3">
+								<AlertDialogCancel className="w-full mt-0">
+									Voltar
+								</AlertDialogCancel>
+
+								<AlertDialogAction
+									onClick={handleCancelBooking}
+									className="w-full mt-0"
+								>
+									Confirmar
+								</AlertDialogAction>
+							</AlertDialogFooter>
+						</AlertDialogContent>
+					</AlertDialog>
 				</SheetFooter>
 			</SheetContent>
 		</Sheet>
