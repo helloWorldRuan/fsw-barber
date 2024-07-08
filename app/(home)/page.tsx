@@ -13,19 +13,23 @@ export default async function Home() {
 
 	const barbershops = await db.barbershop.findMany({});
 
-	const confirmedBookings = await db.booking.findMany({
-		where: {
-			userId: (session as any).id,
-			date: {
-				gte: new Date(),
+	let confirmedBookings: any[] = [];
+
+	if ((session?.user as any)?.id) {
+		confirmedBookings = await db.booking.findMany({
+			where: {
+				userId: (session as any)?.id,
+				date: {
+					gte: new Date(),
+				},
 			},
-		},
-		include: {
-			service: true,
-			barbershop: true,
-		},
-		take: 3,
-	});
+			include: {
+				service: true,
+				barbershop: true,
+			},
+			take: 3,
+		});
+	}
 
 	return (
 		<>
@@ -43,17 +47,19 @@ export default async function Home() {
 				<Search />
 			</div>
 
-			<div className="px-5 mt-10">
-				<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
-					Agendamentos
-				</h2>
+			{confirmedBookings.length > 0 && (
+				<div className="px-5 mt-10">
+					<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
+						Agendamentos
+					</h2>
 
-				<div className="flex flex-col gap-4">
-					{confirmedBookings.map((booking) => (
-						<BookingItem key={booking.id} booking={booking} />
-					))}
+					<div className="flex gap-4 overflow-x-auto no-scrollbar">
+						{confirmedBookings.map((booking) => (
+							<BookingItem key={booking.id} booking={booking} />
+						))}
+					</div>
 				</div>
-			</div>
+			)}
 
 			<div className="px-5 mt-10 ">
 				<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
