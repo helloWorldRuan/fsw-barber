@@ -1,5 +1,6 @@
 'use client';
 
+import { ServiceSummary } from '@/app/_components/service-summary';
 import { Button } from '@/app/_components/ui/button';
 import { Calendar } from '@/app/_components/ui/calendar';
 import { Card, CardContent } from '@/app/_components/ui/card';
@@ -25,7 +26,6 @@ import { saveBooking } from '../_actions/save-booking';
 import { formatPriceToBRL } from '../_helpers/formatPrice';
 import { generateDayTimeList } from '../_helpers/hours';
 import { styles } from '../_helpers/styles';
-import { ServiceSummaryItem } from './service-summary-item';
 
 interface ServiceItemProps {
 	service: Service;
@@ -199,36 +199,12 @@ export function ServiceItem({
 								)}
 
 								<div className="py-6 px-5 border-y border-solid border-secondary">
-									<Card>
-										<CardContent className="p-3 flex flex-col gap-3">
-											<ServiceSummaryItem
-												label={service.name}
-												value={formatPriceToBRL(service.price)}
-												bold
-											/>
-
-											<ServiceSummaryItem
-												label="Data"
-												value={
-													(date &&
-														format(date.toString(), "dd 'de' MMMM", {
-															locale: ptBR,
-														})) ??
-													''
-												}
-											/>
-
-											<ServiceSummaryItem
-												label="Horário"
-												value={bookedHour ? bookedHour : 'hh:mm'}
-											/>
-
-											<ServiceSummaryItem
-												label="Barbearia"
-												value={barbershop.name}
-											/>
-										</CardContent>
-									</Card>
+									<ServiceSummary
+										service={service}
+										date={date}
+										bookedHour={bookedHour}
+										barbershop={barbershop}
+									/>
 								</div>
 
 								<SheetFooter className="p-5">
