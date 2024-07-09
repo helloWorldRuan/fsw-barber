@@ -24,7 +24,7 @@ import { toast } from 'sonner';
 import { getBookingsByDate } from '../_actions/get-bookings';
 import { saveBooking } from '../_actions/save-booking';
 import { formatPriceToBRL } from '../_helpers/formatPrice';
-import { generateDayTimeList } from '../_helpers/hours';
+import { getAvailableTimeSlots } from '../_helpers/hours';
 import { styles } from '../_helpers/styles';
 
 interface ServiceItemProps {
@@ -71,10 +71,15 @@ export function ServiceItem({
 		setBookedHour(time);
 	};
 
-	const handleSetHour = (date: Date | undefined) => {
-		setBookedHour('');
+	const handleSetDate = (date: Date | undefined) => {
+		if (date) {
+			const today =
+				format(date, 'dd/MM/yyyy') === format(new Date(), 'dd/MM/yyyy');
+			const newDate = today ? new Date() : date;
 
-		setDate(date);
+			setBookedHour('');
+			setDate(newDate);
+		}
 	};
 
 	const handleBookingSubmit = async () => {
@@ -119,7 +124,7 @@ export function ServiceItem({
 	const timeList = useMemo(() => {
 		if (!date) return [];
 
-		return generateDayTimeList(date).filter((time) => {
+		return getAvailableTimeSlots(date).filter((time) => {
 			const timeHour = Number(time.split(':')[0]);
 			const timeMinutes = Number(time.split(':')[1]);
 
@@ -175,14 +180,14 @@ export function ServiceItem({
 									className="w-full"
 									mode="single"
 									selected={date}
-									onSelect={handleSetHour}
+									onSelect={handleSetDate}
 									locale={ptBR}
 									fromDate={new Date()}
 									styles={styles.CALENDAR}
 								/>
 
 								{date && (
-									<div className="flex justify-between items-center gap-2 py-6 px-5 overflow-x-auto no-scrollbar border-t border-solid border-secondary">
+									<div className="flex justify-start items-center gap-2 py-6 px-5 overflow-x-auto custom-scrollbar border-t border-solid border-secondary">
 										{timeList.map((time) => (
 											<Button
 												onClick={() => handleToggleBookHour(time)}

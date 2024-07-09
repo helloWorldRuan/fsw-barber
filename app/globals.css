@@ -52,4 +52,38 @@
 		-ms-overflow-style: none; /* IE and Edge */
 		scrollbar-width: none; /* Firefox */
 	}
+
+	.custom-scrollbar {
+		overflow: auto;
+	}
+
+	/* styles.css */
+	.custom-scrollbar {
+		overflow: auto;
+	}
+
+	/* Remove scrollbar para navegadores baseados em WebKit */
+	.custom-scrollbar::-webkit-scrollbar {
+		width: 8px; /* Largura do thumb */
+		height: 8px; /* Altura do thumb */
+		background: none;
+	}
+
+	/* Remove as setas */
+	.custom-scrollbar::-webkit-scrollbar-button {
+		display: none; /* Remove os botões de rolagem */
+	}
+
+	/* Track transparente */
+	.custom-scrollbar::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	/* Thumb personalizado */
+	.custom-scrollbar::-webkit-scrollbar-thumb {
+		background-color: #888; /* Cor do thumb */
+		border-radius: 10px; /* Bordas arredondadas */
+		border: 2px solid transparent; /* Faz o thumb parecer menor */
+		background-clip: content-box; /* Ajuste do background */
+	}
 }
