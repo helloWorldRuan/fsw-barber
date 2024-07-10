@@ -20,9 +20,9 @@ export function BarbershopItem({ barbershop }: BarbershopItemProps) {
 	};
 
 	return (
-		<Card className="w-min-[167px] w-[167px] rounded-2xl">
+		<Card className="w-full rounded-2xl">
 			<CardContent className="p-0 w-full flex flex-col justify-between items-start">
-				<div className="p-1 w-[167px] h-[159px] overflow-hidden relative">
+				<div className="p-1 w-full h-[159px] overflow-hidden relative">
 					<div className="absolute left-2 top-2 z-50">
 						<Badge className="bg-[#150029]/50 flex items-center justify-between gap-1 backdrop-blur-sm">
 							<StarIcon size={12} className="fill-primary text-primary" />
@@ -36,7 +36,7 @@ export function BarbershopItem({ barbershop }: BarbershopItemProps) {
 						sizes="100vw"
 						src={barbershop.imageUrl}
 						alt={barbershop.name}
-						className="w-[167px] h-[159px] object-cover rounded-2xl"
+						className="w-full h-[159px] object-cover rounded-2xl"
 					/>
 				</div>
 
