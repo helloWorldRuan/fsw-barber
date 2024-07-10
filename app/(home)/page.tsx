@@ -38,63 +38,65 @@ export default async function Home() {
 		<>
 			<Header />
 
-			<div className="pt-5 px-5">
-				<h2 className="text-xl font-bold">
-					{session?.user
-						? `Olá, ${session?.user.name?.split(' ')[0]}!`
-						: 'Olá! Vamos agendar um corte hoje?'}
-				</h2>
-
-				<p className="capitalize text-sm">
-					{format(new Date(), "EEEE',' dd 'de' MMMM", { locale: ptBR })}
-				</p>
-			</div>
-
-			<div className="px-5 mt-7">
-				<Search />
-			</div>
-
-			{confirmedBookings.length > 0 && (
-				<div className="px-5 mt-10">
-					<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
-						Agendamentos
+			<main className="w-full lg:w-3/4 lg:m-auto">
+				<div className="pt-5 px-5">
+					<h2 className="text-xl font-bold">
+						{session?.user
+							? `Olá, ${session?.user.name?.split(' ')[0]}!`
+							: 'Olá! Vamos agendar um corte hoje?'}
 					</h2>
 
-					<div className="flex gap-4 overflow-x-auto no-scrollbar">
-						{confirmedBookings.map((booking) => (
-							<BookingItem key={booking.id} booking={booking} />
+					<p className="capitalize text-sm">
+						{format(new Date(), "EEEE',' dd 'de' MMMM", { locale: ptBR })}
+					</p>
+				</div>
+
+				<div className="px-5 mt-7">
+					<Search />
+				</div>
+
+				{confirmedBookings.length > 0 && (
+					<div className="px-5 mt-10">
+						<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
+							Agendamentos
+						</h2>
+
+						<div className="flex gap-4 overflow-x-auto no-scrollbar">
+							{confirmedBookings.map((booking) => (
+								<BookingItem key={booking.id} booking={booking} />
+							))}
+						</div>
+					</div>
+				)}
+
+				<div className="px-5 mt-10 ">
+					<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
+						Recomendados
+					</h2>
+
+					<div className="grid grid-flow-col gap-4 overflow-x-auto no-scrollbar">
+						{barbershops.map((barbershop) => (
+							<div className="w-[167px]" key={barbershop.id}>
+								<BarbershopItem barbershop={barbershop} />
+							</div>
 						))}
 					</div>
 				</div>
-			)}
 
-			<div className="px-5 mt-10 ">
-				<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
-					Recomendados
-				</h2>
+				<div className="px-5 mt-10">
+					<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
+						Populares
+					</h2>
 
-				<div className="grid grid-flow-col gap-4 overflow-x-auto no-scrollbar">
-					{barbershops.map((barbershop) => (
-						<div className="w-[167px]" key={barbershop.id}>
-							<BarbershopItem barbershop={barbershop} />
-						</div>
-					))}
+					<div className="grid grid-flow-col gap-4 overflow-x-auto no-scrollbar">
+						{barbershops.map((barbershop) => (
+							<div className="w-[167px]" key={barbershop.id}>
+								<BarbershopItem barbershop={barbershop} />
+							</div>
+						))}
+					</div>
 				</div>
-			</div>
-
-			<div className="px-5 mt-10">
-				<h2 className="uppercase text-gray-400 text-sm font-bold mb-3">
-					Populares
-				</h2>
-
-				<div className="grid grid-flow-col gap-4 overflow-x-auto no-scrollbar">
-					{barbershops.map((barbershop) => (
-						<div className="w-[167px]" key={barbershop.id}>
-							<BarbershopItem barbershop={barbershop} />
-						</div>
-					))}
-				</div>
-			</div>
+			</main>
 		</>
 	);
 }

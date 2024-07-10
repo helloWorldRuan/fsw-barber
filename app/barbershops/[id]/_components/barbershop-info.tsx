@@ -19,8 +19,10 @@ export function BarbershopInfo({ barbershop }: BarbershopInfoProps) {
 	};
 
 	return (
-		<>
-			<div className="h-[250px] w-full relative">
+		<div className="w-full">
+			<div className="h-[250px] w-full relative lg:rounded-3xl overflow-hidden">
+				<div className="w-full h-[250px] bg-gradient-to-t from-black/80 from-30% absolute z-40" />
+
 				<Button
 					onClick={handleReturnToHome}
 					variant="secondary"
@@ -42,7 +44,7 @@ export function BarbershopInfo({ barbershop }: BarbershopInfoProps) {
 				/>
 			</div>
 
-			<div className="px-5 pt-3 pb-6 border-b border-solid border-secondary">
+			<div className="px-5 pt-3 lg:absolute lg:-translate-y-28 z-50">
 				<h1 className="text-xl font-bold mb-2">{barbershop.name}</h1>
 
 				<div className="flex flex-col gap-1">
@@ -57,6 +59,6 @@ export function BarbershopInfo({ barbershop }: BarbershopInfoProps) {
 					</div>
 				</div>
 			</div>
-		</>
+		</div>
 	);
 }

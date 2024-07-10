@@ -141,17 +141,17 @@ export function ServiceItem({
 
 	return (
 		<Card>
-			<CardContent className="w-full p-2 flex justify-start items-center gap-4">
-				<div className="relative min-w-[110px] max-w-[110px] min-h-[110px] max-h-[110px] overflow-hidden rounded-lg">
+			<CardContent className="w-full lg:h-[250px] p-2 flex justify-start items-center gap-4 lg:flex-col">
+				<div className="relative size-[110px] lg:w-full overflow-hidden rounded-lg">
 					<Image
 						src={service.imageUrl}
 						alt={service.name}
 						fill
-						style={{ objectFit: 'contain' }}
+						style={{ objectFit: 'cover' }}
 					/>
 				</div>
 
-				<div className="w-full flex flex-col justify-start items-start">
+				<div className="w-full flex flex-col justify-start items-start lg:px-2 lg:pb-2">
 					<h2 className="font-bold">{service.name}</h2>
 					<p className="text-sm text-gray-400 mb-3">{service.description}</p>
 

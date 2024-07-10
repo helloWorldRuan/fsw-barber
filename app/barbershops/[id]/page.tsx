@@ -36,16 +36,21 @@ export default async function BarbershopDetails({
 
 	return (
 		<>
-			<BarbershopInfo barbershop={barbershop} />
+			<div className="pb-6 lg:pt-6 border-b border-solid border-secondary">
+				<div className="lg:w-3/4 m-auto">
+					<BarbershopInfo barbershop={barbershop} />
+				</div>
+			</div>
 
-			<div className="p-5 flex flex-col gap-3">
+			<div className="w-full lg:w-3/4 m-auto sm:py-5 lg:pt-5 grid lg:grid-cols-4 gap-3">
 				{barbershop.services.map((service) => (
-					<ServiceItem
-						key={service.id}
-						service={service}
-						barbershop={barbershop}
-						isAuthenticated={!!session?.user}
-					/>
+					<div key={service.id}>
+						<ServiceItem
+							service={service}
+							barbershop={barbershop}
+							isAuthenticated={!!session?.user}
+						/>
+					</div>
 				))}
 			</div>
 		</>
