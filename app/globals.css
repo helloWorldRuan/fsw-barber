@@ -41,7 +41,7 @@
 		@apply border-border;
 	}
 	body {
-		@apply bg-background text-foreground antialiased h-screen;
+		@apply bg-background text-foreground antialiased h-screen flex flex-col;
 	}
 
 	/* styles.css */
