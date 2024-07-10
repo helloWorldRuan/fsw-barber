@@ -22,6 +22,9 @@ export default async function BookingsPage() {
 				service: true,
 				barbershop: true,
 			},
+			orderBy: {
+				date: 'asc',
+			},
 		}),
 
 		await db.booking.findMany({
@@ -34,6 +37,9 @@ export default async function BookingsPage() {
 			include: {
 				service: true,
 				barbershop: true,
+			},
+			orderBy: {
+				date: 'desc',
 			},
 		}),
 	]);

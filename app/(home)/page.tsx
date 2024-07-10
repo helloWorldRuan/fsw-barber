@@ -27,6 +27,9 @@ export default async function Home() {
 				service: true,
 				barbershop: true,
 			},
+			orderBy: {
+				date: 'asc',
+			},
 			take: 3,
 		});
 	}
