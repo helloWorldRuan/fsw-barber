@@ -16,19 +16,19 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const formSchema = z.object({
-	search: z
-		.string({
-			required_error: 'Campo obrigatório',
-		})
-		.trim()
-		.min(1, 'Busque por uma barbearia...'),
+	search: z.string().trim().min(1, 'Busque por uma barbearia...'),
 });
 
-export function Search() {
+interface SearchProps {
+	defaultValues: z.infer<typeof formSchema>;
+}
+
+export function Search({ defaultValues }: SearchProps) {
 	const router = useRouter();
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
+		defaultValues,
 	});
 
 	const handleSubmit = (data: z.infer<typeof formSchema>) => {
